@@ -61,49 +61,21 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
+// Function to display the transactions UI
+const displayMovements = movements => {
+  containerMovements.innerHTML = '';
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `
+    <div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+          <div class="movements__value">${mov}</div>
+        </div>`;
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-/////////////////////////////////////////////////
-// Array looping
-// for of
-for (const movement of movements) {
-  if (movement > 0) {
-    console.log(`You deposited $${movement}`);
-  } else {
-    console.log(`You withdrew $${Math.abs(movement)}`);
-  }
-}
-
-console.log('----------');
-
-// forEach - higher order function that requires higher order function
-movements.forEach(function (movement, index, array) {
-  if (movement > 0) {
-    console.log(`Movement ${index + 1}: You deposited $${movement}`);
-  } else {
-    console.log(`Movement ${index + 1}: You withdrew $${Math.abs(movement)}`);
-  }
-});
-
-// MAP forEach
-currencies.forEach(function (value, key, map) {
-  console.log(`${key}: ${value}`);
-});
-
-// Set forEach
-const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR']);
-console.log(currenciesUnique);
-
-currenciesUnique.forEach(function (value, _, map) {
-  console.log(`${_}: ${value}`);
-});
+displayMovements(account1.movements);
