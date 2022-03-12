@@ -80,8 +80,15 @@ const displayMovements = movements => {
 
 displayMovements(account1.movements);
 
-// Create a username for each account
+// Calculate balance
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
 
+calcDisplayBalance(account1.movements);
+
+// Create a username for each account
 const createUserNames = function (accs) {
   // using forEach vs map b/c no need for new array
   // just modifying accounts array
@@ -95,5 +102,3 @@ const createUserNames = function (accs) {
 };
 
 createUserNames(accounts);
-
-console.log(accounts);
