@@ -79,3 +79,21 @@ const displayMovements = movements => {
 };
 
 displayMovements(account1.movements);
+
+// Create a username for each account
+
+const createUserNames = function (accs) {
+  // using forEach vs map b/c no need for new array
+  // just modifying accounts array
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUserNames(accounts);
+
+console.log(accounts);
