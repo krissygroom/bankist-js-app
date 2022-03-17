@@ -61,7 +61,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// Function to display the transactions UI
+// ****** Display the transactions UI ******
 const displayMovements = movements => {
   containerMovements.innerHTML = '';
   movements.forEach(function (mov, i) {
@@ -71,7 +71,7 @@ const displayMovements = movements => {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -80,15 +80,42 @@ const displayMovements = movements => {
 
 displayMovements(account1.movements);
 
-// Calculate balance
+// ******** CALCULATE BALANCE *********
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance}€`;
 };
 
 calcDisplayBalance(account1.movements);
 
-// Create a username for each account
+// ******* DISPLAY TOTAL WITHDRAWALS, DEPOSITS, INTEREST *****
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  // interest of 1.2% paid on each deposit but only if interest is
+  // at least 1 €
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+calcDisplaySummary(account1.movements);
+
+// ******** CREATE USER NAMES *********
 const createUserNames = function (accs) {
   // using forEach vs map b/c no need for new array
   // just modifying accounts array
